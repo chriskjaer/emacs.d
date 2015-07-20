@@ -1,5 +1,5 @@
 # My emacs settings
->> A vim user's forray into uncharted territory.
+> A vim user's forray into uncharted territory.
 
 I've tried prelude and spacemacs before but it's like using Janus for Vim... You need to get down and dirty with the editor to really understand what's going on.
 
