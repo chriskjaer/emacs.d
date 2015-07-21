@@ -50,8 +50,6 @@
 (setq inhibit-splash-screen t) ;; remove splash screen
 
 ;; Move autosave and backup files to temp dir.
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
