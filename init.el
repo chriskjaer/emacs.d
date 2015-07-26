@@ -1,10 +1,10 @@
-;; Don't load outdated byte code
+;;; Don't load outdated byte code
 (setq load-prefer-newer t)
 
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
-            ;'("melpa" . "http://melpa.org/packages/")
+             '("melpa" . "http://melpa.org/packages/")
              '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
 (package-initialize)
@@ -51,19 +51,60 @@
   :init
   (evil-mode 1)
   :config
+  (setq evil-shift-width 2)
+  (use-package evil-matchit
+    :ensure t
+    :init
+    (global-evil-matchit-mode 1))
+  (use-package evil-nerd-commenter
+    :ensure t)
+  (use-package evil-surround
+    :ensure t
+    :init
+    (global-evil-surround-mode))
   (use-package evil-leader
-  :ensure t
-  :init
-  (global-evil-leader-mode)
-  :config
-  (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-  (evil-leader/set-leader "<SPC>")
-  (evil-leader/set-key
+    :ensure t
+    :init
+    (global-evil-leader-mode)
+    :config
+    (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+    (evil-leader/set-leader "<SPC>")
+    (evil-leader/set-key
+      ;; Git
+      "gs"    'magit-status
+
+      ;; Projectile
+      "pp"    'projectile-switch-project
+      "ps"    'projectile-find-file
+      "pb"    'projectile-buffers-with-file
+
+      ;; Helper stuff
+      "hc"    'describe-char
+      "hf"    'describe-function
+      "hk"    'describe-key
+      "hm"    'describe-mode
+      "hp"    'describe-package
+      "ht"    'describe-theme
+      "hv"    'describe-variable
+
+      ;; Files
+      "fw"    'save-buffer
+      "fs"    'save-buffer
+      "ff"    'find-file
+
+      ;; Init file
+      "if"    'find-init-file
+      "ir"    'reload-init-file
+
+      ;; Buffer
+      "bx"    'eval-buffer
+      "bs"    'switch-to-buffer
+
+      ;; Misc
       "<SPC>" 'switch-to-last-used-buffer
-      "w" 'save-buffer
-      "fi" 'find-init-file
-      "ri" 'reload-init-file
-      "bx" 'eval-buffer)))
+
+      ","     'evilnc-comment-operator
+      "x"     'save-buffers-kill-terminal)))
 
 ;; Flyspell
 (use-package flyspell
@@ -145,8 +186,36 @@
 
 ;; magit
 (use-package magit
+  :ensure t)
+
+;; Shell
+(use-package shell
+  :bind ("C-c s" . shell)
+  :init
+  (dirtrack-mode)
+  (setq explicit-shell-file-name (cond ((eq system-type 'darwin) "/usr/local/bin/zsh")))
+  (when (eq system-type 'darwin)
+    (use-package exec-path-from-shell
+      :ensure t
+      :init
+      (exec-path-from-shell-initialize))))
+
+(use-package smooth-scrolling
   :ensure t
-  :bind ("C-c g" . magit-status))
+  :config
+  (setq smooth-scroll-margin 3))
+
+
+;; Better copy paste on mac
+(when (eq system-type 'darwin)
+  (use-package pbcopy
+    :ensure t
+    :config (turn-on-pbcopy)))
+
+(use-package flycheck                   ; On-the-fly syntax checking
+  :ensure t
+  :bind ("C-c l e" . flycheck-list-errors)
+  :init (global-flycheck-mode))
 
 ;; Languages
 (use-package js2-mode
@@ -161,12 +230,11 @@
   :config
   (local-set-key (kbd "RET") 'newline-and-indent))
 
-
 ;; Settings
 
 ;; UI Stuff
-(menu-bar-mode -1)
 (tool-bar-mode -1)
+(menu-bar-mode 1)
 (scroll-bar-mode -1)
 (column-number-mode -1)
 (line-number-mode t)
@@ -175,6 +243,9 @@
 (blink-cursor-mode 0)
 (set-frame-font "Menlo 14")
 (setq default-frame-alist '((font . "Menlo 14")))
+
+;; Highlight cursor line
+(global-hl-line-mode t)
 
 ;; Set that fringe
 (setq window-combination-resize t)
@@ -227,10 +298,14 @@
 (electric-pair-mode 1) ;; auto pairs
 
 ;; switch alt and super on mac
-(setq ns-function-modifier 'hyper)
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier 'super)
+(when (eq system-type 'darwin)
+  (setq mac-command-modifier 'meta
+        mac-option-modifier 'super
+        mac-control-modifier 'control
+        ns-function-modifier 'hyper))
 
 ;; Move autosave and backup files to temp dir.
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
+
+;;; init.el ends here
