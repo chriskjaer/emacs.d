@@ -52,6 +52,11 @@
   (evil-mode 1)
   :config
   (setq evil-shift-width 2)
+  (use-package linum-relative
+    :ensure t
+    :config
+    (add-hook 'evil-insert-state-entry-hook 'linum-relative-toggle)
+    (add-hook 'evil-insert-state-exit-hook 'linum-relative-toggle))
   (use-package evil-matchit
     :ensure t
     :init
@@ -91,6 +96,7 @@
       "fw"    'save-buffer
       "fs"    'save-buffer
       "ff"    'find-file
+      "fj"    'dired-jump
 
       ;; Init file
       "if"    'find-init-file
@@ -98,7 +104,7 @@
 
       ;; Buffer
       "bx"    'eval-buffer
-      "bs"    'switch-to-buffer
+      "bf"    'switch-to-buffer
 
       ;; Misc
       "<SPC>" 'switch-to-last-used-buffer
@@ -117,8 +123,14 @@
 ;; Theme
 (use-package moe-theme
   :ensure t
+  :disabled t
   :config
   (load-theme 'moe-dark t))
+
+(use-package darktooth-theme
+  :ensure t
+  :config
+  (load-theme 'darktooth t))
 
 ;; Company-mode
 (use-package company
@@ -217,18 +229,29 @@
   :bind ("C-c l e" . flycheck-list-errors)
   :init (global-flycheck-mode))
 
-;; Languages
-(use-package js2-mode
+
+
+;;; Languages
+(use-package js2-mode                   ; Javascript
   :ensure t
   :mode (("\\.jsx?\\'" . js2-mode)
          ("\\.json\\'" . js2-mode))
   :commands (j2-mode))
 
-(use-package web-mode
+(use-package web-mode                   ; Templates
   :ensure t
-  :mode (("\\.html?\\'" . web-mode))
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.eex\\'"   . web-mode))
   :config
   (local-set-key (kbd "RET") 'newline-and-indent))
+
+(use-package elixir-mode                ; Elixer
+  :ensure t
+  :mode (("\\.exs?\\'"   . elixir-mode)
+         ("\\.elixer\\'" . elixir-mode))
+  :config
+  (use-package alchemist
+    :ensure t))
 
 ;; Settings
 
@@ -237,6 +260,7 @@
 (menu-bar-mode 1)
 (scroll-bar-mode -1)
 (column-number-mode -1)
+(global-linum-mode t)
 (line-number-mode t)
 (show-paren-mode 1) ;; Show matching parentheses
 (setq blink-matching-paren nil) ;; Highlighted parentheses are nice, but you don't have to flash them...
