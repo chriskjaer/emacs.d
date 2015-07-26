@@ -1,2 +1,7 @@
 .cask/
 auto-save-list/
+eshell/
+#*
+projectile*
+smex*
+elpa/
