@@ -75,7 +75,7 @@
 
       ;; Projectile
       "pp"    'projectile-switch-project
-      "ps"    'projectile-find-file
+      "pf"    'projectile-find-file
       "pb"    'projectile-buffers-with-file
 
       ;; Helper stuff
