@@ -8,10 +8,13 @@ This is my attempt to start using Emacs without any preconfigured settings. I'm 
 Feel free to ping me if you see something that's horribly wrong or I should look into.
 
 
-## What's been added so far:
-- [Cask](https://github.com/cask/cask) for dependency management.
+## Notable stuff:
+- [use-package](https://github.com/jwiegley/use-package) for dependency management.
 - [Evil](http://www.emacswiki.org/emacs/Evil) vi for emacs.
+- [Magit](https://github.com/magit/magit) for awesome git integration. Like vim-fugitive on steriods.
 
 #### Inspiration:
 - Tonini's awesome dotfiles: https://github.com/tonini/emacs.d (Who's also the maintainer of [alchemist](https://github.com/tonini/alchemist.el))
 - This awesome wall of priceless emacs information: http://doc.rix.si/org/fsem.html
+- [Rune's](https://gist.github.com/runeandersen92/546d18057bf13ce24470) init.el
+-
