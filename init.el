@@ -108,6 +108,7 @@
 
       ;; Misc
       "<SPC>" 'switch-to-last-used-buffer
+      "=%"		'indent-region    					 ; Sorry attempt to implement vi's =% indention...
 
       ","     'evilnc-comment-operator
       "x"     'save-buffers-kill-terminal)))
