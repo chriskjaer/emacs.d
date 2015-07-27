@@ -1,5 +1,4 @@
-;;; Don't load outdated byte code
-(setq load-prefer-newer t)
+(setq load-prefer-newer t)              ; Don't load outdated byte code
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -44,30 +43,28 @@
   (interactive)
   (switch-to-buffer (other-buffer)))
 
-
-;; Evil
-(use-package evil
+(use-package evil                       ; Evil - VI for Emacs
   :ensure t
   :init
   (evil-mode 1)
   :config
   (setq evil-shift-width 2)
-  (use-package linum-relative
+  (use-package linum-relative           ; Relative Line Numbers
     :ensure t
     :config
     (add-hook 'evil-insert-state-entry-hook 'linum-relative-toggle)
     (add-hook 'evil-insert-state-exit-hook 'linum-relative-toggle))
-  (use-package evil-matchit
+  (use-package evil-matchit             ; vi-% for more than {[""]}
     :ensure t
     :init
     (global-evil-matchit-mode 1))
-  (use-package evil-nerd-commenter
+  (use-package evil-nerd-commenter      ; Nerdcommenter for emacs
     :ensure t)
-  (use-package evil-surround
+  (use-package evil-surround            ; Exactly like tpopes vim-surround
     :ensure t
     :init
     (global-evil-surround-mode))
-  (use-package evil-leader
+  (use-package evil-leader              ; Leader key for evil
     :ensure t
     :init
     (global-evil-leader-mode)
@@ -115,29 +112,27 @@
       ","     'evilnc-comment-operator
       "x"     'save-buffers-kill-terminal)))
 
-;; Flyspell
-(use-package flyspell
+(use-package flyspell                      ; Spellchecking
   :defer t)
 
-(use-package powerline
+(use-package powerline                     ; Vim Powerline - for Emacs
   :demand
   :disabled t
   :ensure t)
 
-;; Theme
-(use-package moe-theme
+(use-package moe-theme                     ; Theme
   :ensure t
   :disabled t
   :config
   (load-theme 'moe-dark t))
 
-(use-package darktooth-theme
+(use-package darktooth-theme               ; Theme
   :ensure t
   :config
   (load-theme 'darktooth t))
 
 ;; Company-mode
-(use-package company
+(use-package company                       ; Autocomplete
   :ensure t
   :diminish company-mode
   :bind ("C-." . company-complete)
@@ -151,12 +146,12 @@
              ("<tab>" . company-complete)))
 
 ;; Markdown
-(use-package markdown-mode
+(use-package markdown-mode                ; Markdown
   :ensure t)
 
 
 ;; Golden Ratio
-(use-package golden-ratio
+(use-package golden-ratio                 ; Auto resize windows
   :ensure t
   :diminish golden-ratio-mode
   :init
@@ -170,23 +165,17 @@
                   evil-window-up
                   evil-window-down))))
 
-;; Winner mode -- undo/redo for you window configuration (C-c <LEFT>)
-(use-package winner
+
+(use-package winner                       ; undo/redo for you window configuration (C-c <left>)
   :init (winner-mode t))
 
 
-;; Helm & Projectile & Perspective & Ido
-(use-package projectile
+(use-package projectile                   ; Awesome project handling
   :ensure t
   :diminish projectile-mode
   :bind ("M-p" . projectile-find-file)
   :init
   (projectile-global-mode))
-
-(use-package ido-vertical-mode
-  :ensure t
-  :init
-  (ido-vertical-mode 1))
 
 (use-package ido
   :init
@@ -200,8 +189,12 @@
     (setq ido-enable-flex-matching t
           ido-use-faces nil)))
 
-;; ido for M-x
-(use-package smex
+(use-package ido-vertical-mode
+  :ensure t
+  :init
+  (ido-vertical-mode 1))
+
+(use-package smex                         ; ido for M-x
   ;:disabled t
   :ensure t
   :bind ("M-x" . smex)
@@ -209,11 +202,11 @@
   (smex-initialize))
 
 ;; magit
-(use-package magit
+(use-package magit                        ; Awesome git frontend - like tpopes git-fugitive on steroids
   :ensure t)
 
 ;; Shell
-(use-package shell
+(use-package shell                        ; Shell shortcut settings
   :bind ("C-c s" . shell)
   :init
   (dirtrack-mode)
@@ -224,12 +217,12 @@
       :init
       (exec-path-from-shell-initialize))))
 
-(use-package smooth-scrolling
+(use-package smooth-scrolling             ; Scroll like VI
   :ensure t
   :config
   (setq smooth-scroll-margin 3))
 
-(use-package smartparens
+(use-package smartparens                  ; Autoclosing stuff. Better than `electric-mode' most of the time.
   :ensure t
   :diminish smartparens-mode
   :config
@@ -248,13 +241,12 @@
                       :actions '(insert)))))
 
 
-;; Better copy paste on mac
-(when (eq system-type 'darwin)
+(when (eq system-type 'darwin)            ; Better copy paste on mac
   (use-package pbcopy
     :ensure t
     :config (turn-on-pbcopy)))
 
-(use-package flycheck                   ; On-the-fly syntax checking
+(use-package flycheck                     ; On-the-fly syntax checking / linting
   :ensure t
   :diminish flycheck-mode
   :bind ("C-c l e" . flycheck-list-errors)
@@ -265,7 +257,7 @@
                         '(javascript-jshint)))
   (flycheck-add-mode 'javascript-eslint 'web-mode))
 
-(use-package yasnippet
+(use-package yasnippet                   ; Snippets
   :ensure t
   :defer 2
   :diminish yas-minor-mode
@@ -310,7 +302,11 @@
   (use-package alchemist
     :ensure t))
 
-;; Settings
+
+
+
+
+;; --- General Settings ----------------------------------------
 
 ;; UI Stuff
 (tool-bar-mode -1)
