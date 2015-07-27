@@ -6,3 +6,5 @@ projectile*
 smex*
 elpa/
 flycheck*
+/yasnippet-snippets/
+/ido.last
