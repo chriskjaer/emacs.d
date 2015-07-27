@@ -160,7 +160,14 @@
   :diminish golden-ratio-mode
   :init
   (golden-ratio-mode 1)
-  (setq golden-ratio-auto-scale t))
+  (setq golden-ratio-auto-scale t)
+  :config
+  (setq golden-ratio-extra-commands
+        (append golden-ratio-extra-commands
+                '(evil-window-left
+                  evil-window-right
+                  evil-window-up
+                  evil-window-down))))
 
 ;; Winner mode -- undo/redo for you window configuration (C-c <LEFT>)
 (use-package winner
