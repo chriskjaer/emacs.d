@@ -121,6 +121,7 @@
 
 (use-package powerline
   :demand
+  :disabled t
   :ensure t)
 
 ;; Theme
@@ -177,6 +178,7 @@
 ;; Helm & Projectile & Perspective & Ido
 (use-package projectile
   :ensure t
+  :diminish projectile-mode
   :bind ("M-p" . projectile-find-file)
   :init
   (projectile-global-mode))
@@ -227,6 +229,24 @@
   :config
   (setq smooth-scroll-margin 3))
 
+(use-package smartparens
+  :ensure t
+  :diminish smartparens-mode
+  :config
+  (smartparens-global-mode)
+  (progn
+     (defun my-elixir-do-end-close-action (id action context)
+       (when (eq action 'insert)
+         (newline-and-indent)
+         (previous-line)
+         (indent-according-to-mode)))
+
+     (sp-with-modes '(elixir-mode)
+       (sp-local-pair "do" "end"
+                      :when '(("SPC" "RET"))
+                      :post-handlers '(:add my-elixir-do-end-close-action)
+                      :actions '(insert)))))
+
 
 ;; Better copy paste on mac
 (when (eq system-type 'darwin)
@@ -236,17 +256,37 @@
 
 (use-package flycheck                   ; On-the-fly syntax checking
   :ensure t
+  :diminish flycheck-mode
   :bind ("C-c l e" . flycheck-list-errors)
-  :init (global-flycheck-mode))
+  :init (global-flycheck-mode)
+  :config
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(javascript-jshint)))
+  (flycheck-add-mode 'javascript-eslint 'web-mode))
+
+(use-package yasnippet
+  :ensure t
+  :defer 2
+  :diminish yas-minor-mode
+  :config
+  (setq yas-snippet-dirs
+        '("~/.emacs.d/snippets"
+          "~/.emacs.d/yasnippet-snippets"))
+  (yas-global-mode 1))
 
 
 
 ;;; Languages
 (use-package js2-mode                   ; Javascript
   :ensure t
-  :mode (("\\.jsx?\\'" . js2-mode)
-         ("\\.json\\'" . js2-mode))
+  :mode (("\\.jsx?\\'" . js2-mode))
   :commands (j2-mode))
+
+(use-package json-mode                  ; JSON
+  :ensure t
+  :mode (("\\.json\\'" . json-mode))
+  :commands (json-mode))
 
 (use-package web-mode                   ; Templates
   :ensure t
@@ -255,11 +295,18 @@
   :config
   (local-set-key (kbd "RET") 'newline-and-indent))
 
+
 (use-package elixir-mode                ; Elixer
   :ensure t
   :mode (("\\.exs?\\'"   . elixir-mode)
          ("\\.elixer\\'" . elixir-mode))
   :config
+  (add-to-list 'elixir-mode-hook
+               (defun auto-activate-ruby-end-mode-for-elixir-mode ()
+                 (set (make-variable-buffer-local 'ruby-end-expand-keywords-before-re)
+                      "\\(?:^\\|\\s-+\\)\\(?:do\\)")
+                 (set (make-variable-buffer-local 'ruby-end-check-statement-modifiers) nil)
+                 (ruby-end-mode +1)))
   (use-package alchemist
     :ensure t))
 
@@ -329,7 +376,7 @@
 (global-visual-line-mode t)
 (global-auto-revert-mode t) ;; Auto reload buffers if files changes outside of emacs
 
-(electric-pair-mode 1) ;; auto pairs
+;(electric-pair-mode 1) ;; auto pairs
 
 ;; switch alt and super on mac
 (when (eq system-type 'darwin)
@@ -343,3 +390,19 @@
       `((".*" ,temporary-file-directory t)))
 
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("ca9d9cf1d550a6296db85048aebd07e982d3ce2e52727e431809fa579f5c8ebb" default)))
+ '(pos-tip-background-color "#36473A")
+ '(pos-tip-foreground-color "#FFFFC8"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
