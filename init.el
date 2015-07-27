@@ -106,6 +106,9 @@
       "bx"    'eval-buffer
       "bf"    'switch-to-buffer
 
+      ;; Errors
+      "el"    'flycheck-list-errors
+
       ;; Misc
       "<SPC>" 'switch-to-last-used-buffer
 
