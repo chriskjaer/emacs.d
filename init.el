@@ -108,7 +108,7 @@
 
       ;; Misc
       "<SPC>" 'switch-to-last-used-buffer
-      "=%"		'indent-region    					 ; Sorry attempt to implement vi's =% indention...
+      "=%"    'indent-region               ; Sorry attempt to implement vi's =% indention...
 
       ","     'evilnc-comment-operator
       "x"     'save-buffers-kill-terminal)))
@@ -123,12 +123,12 @@
 
 (use-package moe-theme                     ; Theme
   :ensure t
-  :disabled t
   :config
   (load-theme 'moe-dark t))
 
 (use-package darktooth-theme               ; Theme
   :ensure t
+  :disabled t
   :config
   (load-theme 'darktooth t))
 
